@@ -4,7 +4,15 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Open When Letters — For You 💗</title>
+
 <style>
+  :root{
+    --pink1:#ff4da6;
+    --pink2:#ff82c9;
+    --pink3:#ffb3e6;
+    --accent:#ff99cc;
+  }
+
   body {
     margin:0;
     background:#000;
@@ -13,153 +21,313 @@
     overflow-x:hidden;
   }
 
+  /* Smooth pulse title */
   h1 {
     text-align:center;
-    margin-top:40px;
-    font-size:2.4rem;
-    color:#ff4da6;
+    margin-top:36px;
+    font-size:2.6rem;
+    color:var(--pink1);
+    text-shadow:0 0 20px rgba(255,77,166,0.5);
+    animation:pulse 2.6s infinite ease-in-out;
   }
+  @keyframes pulse {0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
 
-  .letters {
-    width:90%;
-    max-width:700px;
-    margin:40px auto;
-    display:flex;
-    flex-direction:column;
-    gap:25px;
-  }
+  /* Night sky */
+  .stars{width:100%;height:100%;position:fixed;top:0;left:0;pointer-events:none;z-index:-3}
+  .stars span{position:absolute;width:2px;height:2px;background:white;border-radius:50%;opacity:0.8;animation:twinkle 3s infinite ease-in-out}
+  @keyframes twinkle{0%{opacity:0.2}50%{opacity:1}100%{opacity:0.2}}
 
-  .card {
-    background:#111;
-    border:2px solid #ff4da6;
-    border-radius:20px;
-    padding:20px;
-    cursor:pointer;
-    transition:0.3s;
-  }
-  .card:hover {
-    background:#1a1a1a;
-    box-shadow:0 0 20px #ff4da6aa;
-  }
+  .letters{width:92%;max-width:820px;margin:36px auto;display:flex;flex-direction:column;gap:20px;position:relative;padding-bottom:80px}
 
-  .card h2 {
-    margin:0;
-    color:#ff82c9;
-    font-size:1.5rem;
+  /* Glowing animated border for cards */
+  .card{
+    position:relative;overflow:visible;border-radius:20px;padding:20px;background:linear-gradient(180deg,#090909, #111111);cursor:pointer;transition:transform .25s ease,box-shadow .25s ease;
   }
+  .card::before{
+    content:"";position:absolute;inset:-2px;border-radius:22px;padding:2px;background:linear-gradient(45deg,var(--pink1),var(--pink2),var(--pink3),#ff1a75);-webkit-mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);mask-composite:exclude;pointer-events:none;opacity:0.85;filter:blur(8px);transition:opacity .3s}
+  .card:hover::before{filter:blur(14px);opacity:1}
+  .card:hover{transform:translateY(-6px);box-shadow:0 10px 40px rgba(255,77,166,0.12)}
 
-  .letter-text {
-    display:none;
-    margin-top:15px;
-    color:#ffd2ec;
-    line-height:1.7;
-    font-size:1rem;
-    white-space:pre-wrap;
-  }
+  .card h2{margin:0;color:var(--pink2);font-size:1.35rem;text-shadow:0 0 8px rgba(255,130,201,0.3)}
+  .letter-text{display:block;margin-top:12px;color:#ffd2ec;line-height:1.7;font-size:1rem;white-space:pre-wrap;min-height:1.2em}
+  .letter-text.empty{color:transparent}
+
+  /* MULTICOLOR HEART SHOWER */
+  .hearts{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:-2}
+  .hearts span{position:absolute;top:-10%;font-size:22px;opacity:0.95;animation:heartFall linear infinite}
+  @keyframes heartFall{0%{transform:translateY(-10%) rotate(0deg) scale(1)}100%{transform:translateY(120%) rotate(360deg) scale(1.1)}}
+
+  /* Cursor spark trail */
+  .spark{position:fixed;width:8px;height:8px;background:var(--pink2);border-radius:50%;pointer-events:none;opacity:1;transform:translate(-50%,-50%);animation:sparkFade .6s linear forwards}
+  @keyframes sparkFade{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.2)}}
+
+  /* Heart explosion */
+  .explode-heart{position:fixed;pointer-events:none;font-size:24px;animation:explode .9s ease-out forwards}
+  @keyframes explode{0%{transform:scale(.2) translateY(0);opacity:1}60%{transform:scale(1.15) translateY(-10px)}100%{transform:scale(1.8) translateY(-40px);opacity:0}}
+
+  /* FLOATING MESSAGES */
+  .float-msg{position:fixed;font-size:1rem;color:#ffd2ec;opacity:0;animation:floatUp 3s ease-out forwards;pointer-events:none;text-shadow:0 0 8px rgba(0,0,0,0.6)}
+  @keyframes floatUp{0%{transform:translateY(12px);opacity:0}40%{opacity:1}100%{transform:translateY(-40px);opacity:0}}
+
+  /* Floating emojis */
+  .emoji{position:fixed;font-size:22px;pointer-events:none;opacity:0.95;animation:emojiFloat 5s linear forwards}
+  @keyframes emojiFloat{0%{transform:translateY(20px) scale(.6);opacity:0}20%{opacity:1}100%{transform:translateY(-200px) scale(1.2);opacity:0}}
+
+  /* Responsive tweaks */
+  @media (max-width:520px){h1{font-size:1.9rem}.card h2{font-size:1.1rem}}
 </style>
 </head>
+
 <body>
 
 <h1>💌 Open When… Letters</h1>
 
+<div class="stars" aria-hidden="true"></div>
+<div class="hearts" aria-hidden="true"></div>
+
 <div class="letters">
-
-  <!-- Open When You Miss Me -->
-  <div class="card" onclick="toggleLetter('l1')">
+  <!-- Added 2 more letters for a total of 6 -->
+  <div class="card" data-id="l1" onclick="openLetter(event,'l1')">
     <h2>Open when you miss me 💗</h2>
-    <div id="l1" class="letter-text">
-Hey baby,
+    <div id="l1" class="letter-text empty" data-full="My baby…
+If you’re missing me right now, come closer for a moment.
 
-If you're opening this, you're probably wishing I was right there beside you — and honestly, I wish the same. I know long distance can feel heavy sometimes, and silence feels louder when you miss someone.
+I know that ache in your heart — I feel it too.
+But missing you only reminds me how deeply I love you…
+how much your presence feels like home to me.
 
-But listen… even right now, at this exact moment, I'm thinking of you. You're not alone. You're never alone. You live in my heart in a way that distance can't touch.
+Close your eyes.
+Imagine my arms around you, my breath on your neck,
+my voice whispering, “I’m here, sweetheart… I’m always with you.”
 
-Close your eyes for a second. Imagine me hugging you from behind, whispering in your ear, “I'm here. I’m always here.”
+Distance can’t touch what we have.
+You’re in my heart in every second, every breath, every thought.
 
-I love the little things about you — the way you talk, your smile, your silly jokes, your voice when you’re excited, even the way you say my name. Missing you only reminds me how much you matter to me.
+Until I hold you for real—
+here’s my hug, my warmth, my whole love wrapped around you.
 
-We'll be together soon. I promise. And when I finally see you, I'm going to make up for every second we've missed.
-
-Until then… here's my virtual hug 🤍🫂
-I love you more than you know.
-    </div>
+I love you more than words💕.
+"></div>
   </div>
 
-  <!-- Open When Stressed -->
-  <div class="card" onclick="toggleLetter('l2')">
+  <div class="card" data-id="l2" onclick="openLetter(event,'l2')">
     <h2>Open when you feel stressed 🖤</h2>
-    <div id="l2" class="letter-text">
-Hey love,
+    <div id="l2" class="letter-text empty" data-full="Hey love…
+Breathe… slowly.
+Let this moment be soft. Let it be gentle.
 
-If you’re stressed, pause for a moment and breathe with me.
-In… and out.
+You carry so much, more than anyone sees.
+And I just want to tell you — you don’t have to be strong all the time.
+Come rest here for a moment… with me.
 
-You carry so much on your shoulders — responsibilities, expectations, work, emotions. And sometimes you forget that you’re human too. You deserve rest. You deserve softness. You deserve someone to hold you and say, “It’s okay, you don’t need to be strong every second.”
+If I were there, I’d hold your face in my hands and say,
+“You’re doing amazing. I’m proud of you. You’re not alone.”
 
-So let this be that moment for you.
-
-Whatever is bothering you… it will pass. You’ve survived every bad day so far, and you’ll rise from this too. You’re stronger than you realize, and smarter than you give yourself credit for.
-
-And I’m so proud of you.
-
-Please don’t be hard on yourself. You’re allowed to slow down. You’re allowed to feel tired. You’re allowed to ask for comfort — especially from me.
-
-I’m right here, cheering for you, holding your hand through it all.
-    </div>
+Whatever you’re going through… it will pass.
+But you—
+you are stronger than you think, softer than you show,
+and loved more than you realize🫂.
+"></div>
   </div>
 
-  <!-- Open When You Can't Sleep -->
-  <div class="card" onclick="toggleLetter('l3')">
+  <div class="card" data-id="l3" onclick="openLetter(event,'l3')">
     <h2>Open when you can’t sleep 🌙</h2>
-    <div id="l3" class="letter-text">
-Hi baby,
+    <div id="l3" class="letter-text empty" data-full="Hi baby…
+If your mind won’t stop, let me be the calm you need.
 
-If it's late and your mind won’t let you rest, I want you to imagine something.
+Imagine me lying beside you,
+my hand on your chest, feeling your heartbeat,
+my fingers tracing soft circles on your skin.
 
-Picture me lying next to you, my fingers brushing through your hair, my voice soft, telling you, “It’s okay… relax… I’m right here.”
+I’d whisper,
+“Shh… it’s okay. You’re safe. I’m right here.”
 
-The world feels heavier at night. Thoughts feel louder. Worries grow bigger. But none of them can hurt you right now. You're safe.
+Let your eyes grow heavy.
+Let your thoughts slow down.
+Let your heart rest in the warmth of my love.
 
-I wish I could actually hold you to sleep. I wish I could pull you into my arms and tell you a hundred little things until your eyes slowly close.
-
-But even from afar, I'm sending you warmth, comfort, and the softest forehead kiss.
-
-Sleep peacefully, my love. I’ll be right here when you wake up. 💗
-    </div>
+Sleep, my love.
+I’m holding you through the night.💗
+"></div>
   </div>
 
-  <!-- Open When You Want to Feel Loved -->
-  <div class="card" onclick="toggleLetter('l4')">
+  <div class="card" data-id="l4" onclick="openLetter(event,'l4')">
     <h2>Open when you want to feel loved 💞</h2>
-    <div id="l4" class="letter-text">
-My love,
+    <div id="l4" class="letter-text empty" data-full="My sweetheart…
+If you’re opening this because you need love,
+let me drown you in it for a moment.
 
-If you're opening this because you need love, then let me drown you in it for a moment.
+I love your heart — the way it feels, cares, softens, tries.
+I love your voice, your smile, your little habits, your softness, your fire.
+I love the way you exist… simply exist… and still mean everything to me.
 
-I love you for your heart — the softest, most genuine heart I’ve ever known.
-I love you for your efforts — even the ones you think I don’t notice.
-I love you for the way you care, speak, laugh, think, dream.
-I love you on your good days and your bad days.
-I love you when you’re confident and when you’re insecure.
-I love you when you’re close and when you’re far.
-I love every version of you.
+You are loved.
+Deeply.
+Fully.
+Madly.
 
-You are my safe place, my sweetest feeling, my favorite person.
+You’re my favorite person in this entire world😘.
+"></div>
+  </div>
 
-If you ever doubt how much you matter… read this again.
-Because you are loved — deeply, loudly, endlessly.
-By me.
-Always.
-    </div>
+  <div class="card" data-id="l5" onclick="openLetter(event,'l5')">
+    <h2>Open when you need courage 💪</h2>
+    <div id="l5" class="letter-text empty" data-full="Hey brave one,
+
+Today's a big day, or maybe it's just heavy. Whatever it is, remember you can handle it. One breath at a time. I'm cheering for you.
+
+If you’re opening this, it means something scared you, overwhelmed you, or made you doubt yourself.
+So let me remind you of something important:
+
+You are stronger than what you’re facing.
+Stronger than what hurt you.
+Stronger than what your mind is whispering right now.
+
+I’ve seen the fighter in you —
+the way you survive things quietly,
+the way you carry pain with a soft heart,
+the way you get up even when life knocks you down.
+
+That is courage.
+
+Courage isn’t loud.
+Sometimes it’s just taking one small breath,
+one tiny step forward,
+even when everything feels heavy.
+
+So take my hand —
+even from far away —
+and breathe with me.
+
+In…
+and out.
+
+Whatever you’re facing, you’re not facing it alone.
+I believe in you in ways you haven’t even learned to believe in yourself.
+And when you feel like you can’t do it anymore,
+I’ll believe for you.
+
+You’re brave.
+You’re capable.
+You’re going to get through this —
+and when you do, you’ll look back and realize…
+
+You’ve always had courage inside you.
+I just reminded you of it.
+
+I’m right here, always. 💗🔥
+
+Go shine.
+"></div>
+  </div>
+
+  <div class="card" data-id="l6" onclick="openLetter(event,'l6')">
+    <h2>Open when you feel lonely 😊</h2>
+    <div id="l6" class="letter-text empty" data-full="Baby…
+If loneliness is sitting beside you right now,
+let me sit there with you.
+
+You’re not alone.
+My heart is always connected to yours —
+even in silence, even in distance, even in the darkest moments.
+
+Close your eyes.
+Feel my arms wrap around you,
+my chin resting on your shoulder,
+my voice saying softly:
+
+“I’m here. I’m not going anywhere.”
+
+You’re loved more than you know, my darling.
+"></div>
+</div>
+<div class="card" data-id="l7" onclick="openLetter(event,'l7')">
+    <h2>Open when you need motivation 😊</h2>
+    <div id="l7" class="letter-text empty" data-full="Listen, my love…
+You’re stronger than you think.
+You’re capable of more than you believe.
+And I believe in you with my whole heart.
+
+Every dream you have is reachable.
+Every fear can be overcome.
+Every version of you you want to become —
+you can.
+
+And I’ll be here… cheering, supporting, loving you through all of it.
+You’re meant for something beautiful.
+and Remember one thing your girl is so so so Proud of you😘.
+"></div>
   </div>
 
 </div>
 
 <script>
-function toggleLetter(id){
-  const box = document.getElementById(id);
-  box.style.display = (box.style.display === "block") ? "none" : "block";
+/* --- Stars --- */
+const starsEl = document.querySelector('.stars');
+for(let i=0;i<90;i++){const s=document.createElement('span');s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.animationDuration=(2+Math.random()*3)+'s';starsEl.appendChild(s)}
+
+/* --- Heart shower (multicolor, more hearts) --- */
+const heartsEl=document.querySelector('.hearts');
+const heartColors=['#ff4da6','#ff82c9','#ffb3e6','#ff6699','#ffd1e8','#ff99cc','#ff1a75'];
+function spawnHeart(){const h=document.createElement('span');h.innerText='💗';h.style.left=Math.random()*100+'%';h.style.fontSize=(14+Math.random()*36)+'px';h.style.animationDuration=(3+Math.random()*4)+'s';h.style.color=heartColors[Math.floor(Math.random()*heartColors.length)];heartsEl.appendChild(h);setTimeout(()=>{h.remove()},9000)}
+// burst more often
+setInterval(spawnHeart,120);
+for(let i=0;i<12;i++){setTimeout(spawnHeart, i*220)}
+
+/* --- Cursor spark trail --- */
+document.addEventListener('mousemove', (e)=>{const spark=document.createElement('div');spark.className='spark';spark.style.left=e.clientX+'px';spark.style.top=e.clientY+'px';document.body.appendChild(spark);setTimeout(()=>spark.remove(),600);
+  // occasional floating emoji near cursor
+  if(Math.random()<0.03){spawnEmoji(e.clientX,e.clientY)}
+});
+
+/* --- Floating emoji generator --- */
+const emojis=['💖','🌸','✨','🥰','🌙','💫','🌺'];
+function spawnEmoji(x,y){const el=document.createElement('div');el.className='emoji';el.innerText=emojis[Math.floor(Math.random()*emojis.length)];el.style.left=(x + (Math.random()*80-40))+'px';el.style.top=(y + (Math.random()*30-20))+'px';el.style.fontSize=(16+Math.random()*18)+'px';document.body.appendChild(el);setTimeout(()=>el.remove(),5200)}
+// gentle periodic floating emojis
+setInterval(()=>spawnEmoji(window.innerWidth*0.6, window.innerHeight*0.85),1200);
+
+/* --- Typing animation + card opening sound + float messages + heart explosion --- */
+let typingIntervals={};// track typing timers
+function openLetter(event,id){
+  const box=document.getElementById(id);
+  const full=box.getAttribute('data-full')||'';
+  const visible = !box.classList.contains('open');
+
+  if(visible){ // open: play sound, type text, explosions, float msg
+    playOpenSound();
+    startType(box, full);
+
+    // heart explosion
+    for(let i=0;i<8;i++){const heart=document.createElement('span');heart.className='explode-heart';heart.innerText='💗';heart.style.left=event.clientX + (Math.random()*80-40) + 'px';heart.style.top=event.clientY + (Math.random()*80-40) + 'px';document.body.appendChild(heart);setTimeout(()=>heart.remove(),900)}
+
+    // floating message
+    const msgs=["I love you ❤️","You're my everything 💕","Miss you 💖","You got this 💪","My baby 💞"];
+    const f=document.createElement('div');f.className='float-msg';f.innerText=msgs[Math.floor(Math.random()*msgs.length)];f.style.left=(event.clientX + 10) + 'px';f.style.top=(event.clientY - 6) + 'px';document.body.appendChild(f);setTimeout(()=>f.remove(),3000);
+
+    box.classList.add('open');
+  } else { // close: clear typing and hide text
+    stopType(box);
+    box.textContent='';
+    box.classList.remove('open');
+  }
 }
+
+function startType(el, full){stopType(el);el.classList.remove('empty');el.textContent='';let i=0;const speed=24 + Math.random()*18;typingIntervals[el.id]=setInterval(()=>{el.textContent+=full.charAt(i);i++;if(i>=full.length){stopType(el)}},speed)}
+function stopType(el){const t=typingIntervals[el.id];if(t)clearInterval(t);typingIntervals[el.id]=null}
+
+/* --- Play short opening sound (synthesized) --- */
+function playOpenSound(){try{
+  const ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const o=ctx.createOscillator();const g=ctx.createGain();
+  o.type='sine';o.frequency.setValueAtTime(520,ctx.currentTime);
+  g.gain.setValueAtTime(0,ctx.currentTime);
+  g.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.01);
+  g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.7);
+  o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime + 0.8);
+}catch(e){/* audio may be blocked on some browsers */}}
+
+/* clean up typing timers on unload */
+window.addEventListener('beforeunload',()=>{Object.values(typingIntervals).forEach(t=>t&&clearInterval(t))});
 </script>
 
 </body>
