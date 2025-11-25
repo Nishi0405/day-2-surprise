@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Open When Letters — For You 💗</title>
+<style>
+  body {
+    margin:0;
+    background:#000;
+    font-family:'Poppins', sans-serif;
+    color:#ffd2ec;
+    overflow-x:hidden;
+  }
+
+  h1 {
+    text-align:center;
+    margin-top:40px;
+    font-size:2.4rem;
+    color:#ff4da6;
+  }
+
+  .letters {
+    width:90%;
+    max-width:700px;
+    margin:40px auto;
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+  }
+
+  .card {
+    background:#111;
+    border:2px solid #ff4da6;
+    border-radius:20px;
+    padding:20px;
+    cursor:pointer;
+    transition:0.3s;
+  }
+  .card:hover {
+    background:#1a1a1a;
+    box-shadow:0 0 20px #ff4da6aa;
+  }
+
+  .card h2 {
+    margin:0;
+    color:#ff82c9;
+    font-size:1.5rem;
+  }
+
+  .letter-text {
+    display:none;
+    margin-top:15px;
+    color:#ffd2ec;
+    line-height:1.7;
+    font-size:1rem;
+    white-space:pre-wrap;
+  }
+</style>
+</head>
+<body>
+
+<h1>💌 Open When… Letters</h1>
+
+<div class="letters">
+
+  <!-- Open When You Miss Me -->
+  <div class="card" onclick="toggleLetter('l1')">
+    <h2>Open when you miss me 💗</h2>
+    <div id="l1" class="letter-text">
+Hey baby,
+
+If you're opening this, you're probably wishing I was right there beside you — and honestly, I wish the same. I know long distance can feel heavy sometimes, and silence feels louder when you miss someone.
+
+But listen… even right now, at this exact moment, I'm thinking of you. You're not alone. You're never alone. You live in my heart in a way that distance can't touch.
+
+Close your eyes for a second. Imagine me hugging you from behind, whispering in your ear, “I'm here. I’m always here.”
+
+I love the little things about you — the way you talk, your smile, your silly jokes, your voice when you’re excited, even the way you say my name. Missing you only reminds me how much you matter to me.
+
+We'll be together soon. I promise. And when I finally see you, I'm going to make up for every second we've missed.
+
+Until then… here's my virtual hug 🤍🫂
+I love you more than you know.
+    </div>
+  </div>
+
+  <!-- Open When Stressed -->
+  <div class="card" onclick="toggleLetter('l2')">
+    <h2>Open when you feel stressed 🖤</h2>
+    <div id="l2" class="letter-text">
+Hey love,
+
+If you’re stressed, pause for a moment and breathe with me.
+In… and out.
+
+You carry so much on your shoulders — responsibilities, expectations, work, emotions. And sometimes you forget that you’re human too. You deserve rest. You deserve softness. You deserve someone to hold you and say, “It’s okay, you don’t need to be strong every second.”
+
+So let this be that moment for you.
+
+Whatever is bothering you… it will pass. You’ve survived every bad day so far, and you’ll rise from this too. You’re stronger than you realize, and smarter than you give yourself credit for.
+
+And I’m so proud of you.
+
+Please don’t be hard on yourself. You’re allowed to slow down. You’re allowed to feel tired. You’re allowed to ask for comfort — especially from me.
+
+I’m right here, cheering for you, holding your hand through it all.
+    </div>
+  </div>
+
+  <!-- Open When You Can't Sleep -->
+  <div class="card" onclick="toggleLetter('l3')">
+    <h2>Open when you can’t sleep 🌙</h2>
+    <div id="l3" class="letter-text">
+Hi baby,
+
+If it's late and your mind won’t let you rest, I want you to imagine something.
+
+Picture me lying next to you, my fingers brushing through your hair, my voice soft, telling you, “It’s okay… relax… I’m right here.”
+
+The world feels heavier at night. Thoughts feel louder. Worries grow bigger. But none of them can hurt you right now. You're safe.
+
+I wish I could actually hold you to sleep. I wish I could pull you into my arms and tell you a hundred little things until your eyes slowly close.
+
+But even from afar, I'm sending you warmth, comfort, and the softest forehead kiss.
+
+Sleep peacefully, my love. I’ll be right here when you wake up. 💗
+    </div>
+  </div>
+
+  <!-- Open When You Want to Feel Loved -->
+  <div class="card" onclick="toggleLetter('l4')">
+    <h2>Open when you want to feel loved 💞</h2>
+    <div id="l4" class="letter-text">
+My love,
+
+If you're opening this because you need love, then let me drown you in it for a moment.
+
+I love you for your heart — the softest, most genuine heart I’ve ever known.
+I love you for your efforts — even the ones you think I don’t notice.
+I love you for the way you care, speak, laugh, think, dream.
+I love you on your good days and your bad days.
+I love you when you’re confident and when you’re insecure.
+I love you when you’re close and when you’re far.
+I love every version of you.
+
+You are my safe place, my sweetest feeling, my favorite person.
+
+If you ever doubt how much you matter… read this again.
+Because you are loved — deeply, loudly, endlessly.
+By me.
+Always.
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleLetter(id){
+  const box = document.getElementById(id);
+  box.style.display = (box.style.display === "block") ? "none" : "block";
+}
+</script>
+
+</body>
+</html>
